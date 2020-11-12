@@ -29,7 +29,7 @@ class ReadingManager {
         if(!this.connection){
             return;
         }
-        console.log(this.messagesToRead);
+       
         this.playing = true;
         let file = this.messagesToRead.shift();
         const dispatcher = this.connection.play(file);

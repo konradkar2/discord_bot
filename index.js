@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const calc  = require('./calc');
 const tts = require('./tts')
-const default_tts_settings = require('./settings')
+const default_tts_settings = require('./settings').tts;
 const dbInterface = require('./dbInterface');
 const readingManager = require('./readingManager');
 const translator = require('./translate')
@@ -50,7 +50,10 @@ client.on('voiceStateUpdate', (oldState, newState) => {
         if(user.bot === false){
             let nickname = newState.member.nickname !== null ? newState.member.nickname : user.username;
             let VC = newState.member.voice.channel;
-            rManager = new readingManager.ReadingManager(VC);
+            if(!rManager){
+                rManager = new readingManager.ReadingManager(VC);
+            }
+            
 
             let messages = [
                 'Elo','Witaj','Znowu wbił ten zjeb'
@@ -68,7 +71,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
                 } else {
                     message = messages[Math.floor(Math.random() * messages.length)] + ' ' + nickname;
                 }
-                rManager.readMessage(message,default_tts_settings.tts);
+                rManager.readMessage(message,default_tts_settings);
                 
             })
         }
@@ -101,6 +104,9 @@ client.on('message', async message =>{
                 if(db_user){
                     db_settings = db_user.settings;
                     if(db_settings.read){
+                        if(!rManager){
+                            rManager = new readingManager.ReadingManager(message.member.voice.channel);
+                        }
                         if(db_settings.translation.translate === true){
                             targetLan = db_settings.translation.target;
                            
@@ -248,7 +254,7 @@ client.on('message', async message =>{
                 dbInterface.fetchUser(user_id).then(db_user =>{
                     
                     let db_settings = db_user.settings;
-                    db_settings.tts = default_tts_settings.tts;
+                    db_settings.tts = default_tts_settings;
                     dbInterface.updateUserSettings(user_id,db_settings).then(res =>{
                         console.log("Ustawiono domyślny tts dla: " + username);
                     })
