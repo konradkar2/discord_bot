@@ -1,5 +1,5 @@
 
-const tts = require('./tts')
+const tts = require('../tts')
 
 // user_id,message
 
@@ -15,15 +15,14 @@ class ReadingManager {
       this.connection = null;
     }
     
-    readMessage(message,tts_settings){         
-        let me = this;
-        tts.textToSpeech(message + '.',tts_settings,function(path){            
-            me.messagesToRead.push(path);
-            if(!me.playing){
-                me.joinAndPlayAudio();
+    readMessage(message,tts_settings){        
+        tts.textToSpeech(message + '.',tts_settings).then(filename =>{            
+            this.messagesToRead.push(filename);
+            if(!this.playing){
+                this.joinAndPlayAudio();
             }
         
-        });
+        }).catch(er => console.log(er));
     }
     playNext(){
         if(!this.connection){
@@ -35,7 +34,7 @@ class ReadingManager {
         const dispatcher = this.connection.play(file);
         dispatcher.on("finish", end =>{
             if(this.messagesToRead.length > 0){            
-            this.playNext()
+            this.playNext();
             }
             else{
                 this.vc.leave();
