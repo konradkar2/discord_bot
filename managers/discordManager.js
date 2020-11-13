@@ -1,6 +1,5 @@
-const Reading = require ('./readingManager');
 const Discord = require('discord.js');
-const { ReadingManager } = require('./readingManager');
+const ReadingManager  = require('./readingManager').ReadingManager;
 
 const messageHandler = require('../handlers/messageHandler');
 const voiceChannelHandler = require('../handlers/voiceChannelHandler');
@@ -24,20 +23,30 @@ class DiscordManager{
         });
         
         this.client.on('message',message =>{            
-                 messageHandler.handleMessage(message,this);
+             messageHandler.handleMessage(message,this);
             
         })  
 
     }
-    setVoiceChannel(voice_channel) {
-        this.readingManager = new ReadingManager(voice_channel);
-    }
-    isReadingManagerOnline() {
-        return this.readingManager !== null;
-    }
-    readMessage(messageText,tts_settings){
-        this.readingManager.readMessage(messageText,tts_settings);
-    }
+    
+    readMessage(vc,messageText,tts_settings){
+        if(!this.readingManager){
+            
+            this.readingManager = new ReadingManager(vc, () => {                
+                this.readingManager = null;
+            });
+        }
+        else if(vc.id !== this.readingManager.vc.id){
+            this.sendMessage("Someone is already using bot in different channel.");
+            return;
+        }
+        
+        this.readingManager.readMessage(messageText,tts_settings)
+               
+            
+            
+           
+     }
     sendMessage(message){ //text or discord Embed message
         try{            
             this.client.channels.cache.get(api_keys.macius).send(message);   

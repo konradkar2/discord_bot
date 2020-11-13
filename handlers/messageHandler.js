@@ -27,9 +27,9 @@ function handleMessage(message,discordManager){
                 if(db_user){
                     db_settings = db_user.settings;
                     if(db_settings.read){
-                        if(!discordManager.isReadingManagerOnline()){
-                            discordManager.setVoiceChannel(message.member.voice.channel);
-                        }
+                        
+                        let vc = message.member.voice.channel;
+                        
                         if(db_settings.translation.translate){
                             targetLan = db_settings.translation.target;
                            
@@ -37,13 +37,13 @@ function handleMessage(message,discordManager){
                                 response = JSON.parse(responseText);                                
                                 translatedText = response.data.translations[0].translatedText;
                                 
-                                discordManager.readMessage(translatedText,db_settings.tts); 
+                                discordManager.readMessage(vc,translatedText,db_settings.tts); 
                             }).catch(er => {
                                 discordManager.sendMessage(er.toString());
                             });
                         }
                         else{                         
-                            discordManager.readMessage(message.content,db_settings.tts); 
+                            discordManager.readMessage(vc,message.content,db_settings.tts); 
                         }
                                                
                     }

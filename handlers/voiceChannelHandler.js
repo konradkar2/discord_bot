@@ -9,10 +9,7 @@ function handleVoiceChannelUpdate(oldState, newState,discordManager){
         let user = newState.member.user;        
         if(user.bot === false){
             let nickname = newState.member.nickname !== null ? newState.member.nickname : user.username;
-            let VC = newState.member.voice.channel;
-            if(!discordManager.isReadingManagerOnline()){
-                discordManager.setVoiceChannel(VC);
-            }
+            let vc = newState.member.voice.channel;
             
 
             let messages = [
@@ -31,7 +28,7 @@ function handleVoiceChannelUpdate(oldState, newState,discordManager){
                 } else {
                     message = messages[Math.floor(Math.random() * messages.length)] + ' ' + nickname;
                 }
-                 discordManager.readMessage(message,default_tts_settings);
+                 discordManager.readMessage(vc,message,default_tts_settings);
                 
             }).catch(e => {
                 console.log(e);

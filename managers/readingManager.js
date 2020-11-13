@@ -8,21 +8,23 @@ function deleteFile(file){
 }
 
 class ReadingManager {
-    constructor(vc) {
+    constructor(vc,callback) {
       this.vc = vc;    
       this.messagesToRead = [];
       this.playing = false;
       this.connection = null;
+      this.doneCallback = callback;
     }
     
-    readMessage(message,tts_settings){        
+    readMessage(message,tts_settings){  
         tts.textToSpeech(message + '.',tts_settings).then(filename =>{            
             this.messagesToRead.push(filename);
             if(!this.playing){
                 this.joinAndPlayAudio();
             }
-        
+    
         }).catch(er => console.log(er));
+         
     }
     playNext(){
         if(!this.connection){
@@ -39,6 +41,7 @@ class ReadingManager {
             else{
                 this.vc.leave();
                 this.playing = false;
+                this.doneCallback();
             }
         })
     }
@@ -58,6 +61,7 @@ class ReadingManager {
                     else{
                         this.playing = false;
                         vc.leave();
+                        this.doneCallback();
                     }
                 
                 });                        
