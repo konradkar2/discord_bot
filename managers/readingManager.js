@@ -68,7 +68,10 @@ class ReadingManager {
                             
                 
             })
-            .catch(console.error);
+            .catch(er => {
+                console.log(er);
+                this.doneCallback();
+            });
         }
     }
     
