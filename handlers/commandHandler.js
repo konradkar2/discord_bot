@@ -1,6 +1,8 @@
 const Discord = require('discord.js');
 const dbInterface = require('../dbInterface');
 const calc = require('../calc');
+const default_tts_settings = require('../settings').tts;
+
 function handleCommand(command,args,user_id,username){
     return new Promise((resolve,reject) => { 
         switch(command){
