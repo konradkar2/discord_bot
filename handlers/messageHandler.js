@@ -28,8 +28,7 @@ function handleMessage(message,discordManager){
                     db_settings = db_user.settings;
                     if(db_settings.read){
                         
-                        let vc = message.member.voice.channel;
-                        
+                        let vc = message.member.voice.channel;                        
                         if(db_settings.translation.translate){
                             targetLan = db_settings.translation.target;
                            

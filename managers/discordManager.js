@@ -30,12 +30,15 @@ class DiscordManager{
     }
     
     readMessage(vc,messageText,tts_settings){
-        if(!this.readingManager){
+        if(!vc  && !this.readingManager){
+            return;
+        }
+        else if(!this.readingManager){
             
             this.readingManager = new ReadingManager(vc, () => {                
                 this.readingManager = null;
             });
-        }
+        }        
         else if(vc.id !== this.readingManager.vc.id){
             this.sendMessage("Someone is already using bot in different channel.");
             return;
