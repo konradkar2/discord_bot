@@ -13,6 +13,8 @@ function handleMessage(message,discordManager){
     var user_id = message.member.id.toString();   
     var username = message.member.user.username;
     var prefixes_to_check = [prefix,'-','_']
+    var textchannel = message.channel;
+    
     let read = true;
     prefixes_to_check.forEach(element => {
         if(message.content.startsWith(element)){
@@ -38,7 +40,7 @@ function handleMessage(message,discordManager){
                                 
                                 discordManager.readMessage(vc,translatedText,db_settings.tts); 
                             }).catch(er => {
-                                discordManager.sendMessage(er.toString());
+                                discordManager.sendMessage(textchannel,er.toString());
                             });
                         }
                         else{                         
@@ -63,9 +65,9 @@ function handleMessage(message,discordManager){
         command = mes;
     }
 
-    commandHandler.handleCommand(command,args,user_id,username).then(message => {
-        if(message){
-            discordManager.sendMessage(message);
+    commandHandler.handleCommand(command,args,user_id,username).then(mes => {
+        if(mes){
+            discordManager.sendMessage(textchannel, mes);
         }
     }).catch(er => {
         console.log("Exception: " + er.message);

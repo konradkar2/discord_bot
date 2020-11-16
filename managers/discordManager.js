@@ -3,7 +3,7 @@ const ReadingManager  = require('./readingManager').ReadingManager;
 
 const messageHandler = require('../handlers/messageHandler');
 const voiceChannelHandler = require('../handlers/voiceChannelHandler');
-const api_keys = require('../api_keys').keys;
+
 
 class DiscordManager{
     constructor(bot_token){
@@ -23,6 +23,7 @@ class DiscordManager{
         });
         
         this.client.on('message',message =>{            
+          
              messageHandler.handleMessage(message,this);
             
         })  
@@ -50,13 +51,12 @@ class DiscordManager{
             
            
      }
-    sendMessage(message){ //text or discord Embed message
-        try{            
-            this.client.channels.cache.get(api_keys.macius).send(message);   
-        }
-        catch(er){
-            console.log(er);
-        }
+    sendMessage(textchannel,message){ //text or discord Embed message
+                 
+        textchannel.send(message).catch(er => {
+            console.error(er);
+        });   
+       
         
     }
    
