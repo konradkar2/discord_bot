@@ -8,10 +8,12 @@ function deleteFile(file){
         if(file.includes('readonly')){
             resolve(false);
         }
-        fs.unlink(file,err => {
+        else {
+            fs.unlink(file,err => {
             if(err) reject(err);
             else resolve(true);
         })
+        }
     });
 }
 
