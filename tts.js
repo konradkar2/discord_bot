@@ -38,7 +38,7 @@ var finalUrl = url +'?key=' +key;
       
       decoded_mp3 = jsonObj.audioContent;
     
-      filename = 'audio/'+utils.makeId(10) +'.mp3';
+      filename = 'audio/tts/'+utils.makeId(10) +'.mp3';
 
       fs.writeFile(filename,decoded_mp3, 'base64',function(err){
         if(!err){

@@ -1,13 +1,21 @@
 
 const tts = require('../tts')
-
+const fs = require('fs');
 // user_id,message
 
 function deleteFile(file){
-
+    return new Promise((resolve,reject) => {
+        if(file.includes('readonly')){
+            resolve(false);
+        }
+        fs.unlink(file,err => {
+            if(err) reject(err);
+            else resolve(true);
+        })
+    });
 }
 
-class ReadingManager {
+class AudioManager {
     constructor(vc,callback) {
       this.vc = vc;    
       this.messagesToRead = [];
@@ -23,8 +31,13 @@ class ReadingManager {
                 this.joinAndPlayAudio();
             }
     
-        }).catch(er => console.log(er));
-         
+        }).catch(er => console.log(er));         
+    }
+    playAudio(filename){
+        this.messagesToRead.push(filename);
+            if(!this.playing){
+                this.joinAndPlayAudio();
+            }
     }
     playNext(){
         if(!this.connection){
@@ -35,6 +48,14 @@ class ReadingManager {
         let file = this.messagesToRead.shift();
         const dispatcher = this.connection.play(file);
         dispatcher.on("finish", end =>{
+            deleteFile(file).then((success)=> {
+                if(success) {
+                    console.log("Deleted " + file);
+                }
+                
+            }).catch(err => {
+                console.error("Error when deleting: " + file + err.message);
+            })
             if(this.messagesToRead.length > 0){            
             this.playNext();
             }
@@ -55,6 +76,15 @@ class ReadingManager {
                 let file = this.messagesToRead.shift();            
                 const dispatcher = connection.play(file);
                 dispatcher.on("finish", end => {
+                    deleteFile(file).then((success) => {
+                        if(success){
+                            console.log("Deleted " + file);
+                        }
+                        
+                    }).catch(err => {
+                        console.error("Error when deleting: " + file + err.message);
+                    })
+
                     if(this.messagesToRead.length > 0){                    
                         this.playNext()
                     }
@@ -68,8 +98,9 @@ class ReadingManager {
                             
                 
             })
-            .catch(er => {
-                console.log(er);
+            .catch(er => {                
+                console.log("Catched!" +er);
+                vc.leave();
                 this.doneCallback();
             });
         }
@@ -82,4 +113,4 @@ class ReadingManager {
     
 
 
-module.exports = { ReadingManager }
+module.exports = { AudioManager }
