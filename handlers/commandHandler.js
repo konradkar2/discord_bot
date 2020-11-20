@@ -5,7 +5,7 @@ const default_tts_settings = require('../settings').tts;
 
 function handleCommand(command,args,user_id,username){
     return new Promise((resolve,reject) => { 
-        let result = {
+        let data = {
             message: "",
             audio: ""
         }
@@ -13,8 +13,8 @@ function handleCommand(command,args,user_id,username){
             case 'poka':
                 var arg = args.toLowerCase().trim();    
                 if(arg === 'huja'){
-                    result.message =  'https://www.youtube.com/playlist?list=PLv0Kl50jfz-KKYjFie23aJM5Cu_JC8gPy';
-                    resolve(result);
+                    data.message =  'https://www.youtube.com/playlist?list=PLv0Kl50jfz-KKYjFie23aJM5Cu_JC8gPy';
+                    resolve(data);
                 }
                 break;
             case 'calc':
@@ -29,8 +29,8 @@ function handleCommand(command,args,user_id,username){
                         { name: 'Input', value: result.input },
                         { name: 'Result', value: result.result },
                     );
-                    result.message = messageEmbed;
-                    resolve(result);
+                    data.message = messageEmbed;
+                    resolve(data);
                 }).catch(er => reject(er));  
                 break;
 
@@ -58,8 +58,8 @@ function handleCommand(command,args,user_id,username){
                                     { name: 'Target language', value: target}
 
                                 );
-                                result.message = messageEmbed;
-                                resolve(result);
+                                data.message = messageEmbed;
+                                resolve(data);
                             }
                             catch(err){
                                 reject(new Error("Error when getting user settings"));
@@ -74,8 +74,8 @@ function handleCommand(command,args,user_id,username){
                         db_settings.read = !db_settings.read;
                         dbInterface.updateUserSettings(user_id,db_settings).then(res => {
                             let message = db_settings.read == true ? 'Czytanko włączone' : 'Czytanko wyłączone';
-                            result.message = message + ' dla ' +username;
-                            resolve(result);
+                            data.message = message + ' dla ' +username;
+                            resolve(data);
                           
                         })
                     });
@@ -86,8 +86,8 @@ function handleCommand(command,args,user_id,username){
                         db_settings.translation.translate = !db_settings.translation.translate;
                         dbInterface.updateUserSettings(user_id,db_settings).then(res => {
                             let message = db_settings.translation.translate == true ? 'Translacja włączona' : 'Translacja wyłączona';
-                            result.message = message + ' dla ' +username;
-                            resolve(result);
+                            data.message = message + ' dla ' +username;
+                            resolve(data);
                         })
                     });
                 break;
@@ -136,8 +136,8 @@ function handleCommand(command,args,user_id,username){
                                 });
                                 
                                 dbInterface.updateUserSettings(user_id,db_settings).then(res => {  
-                                    result.message = 'Zmieniono ustawienia dla: ' + username
-                                    resolve(result);                                  
+                                    data.message = 'Zmieniono ustawienia dla: ' + username
+                                    resolve(data);                                  
                                     
                                 })
                             }
@@ -149,16 +149,16 @@ function handleCommand(command,args,user_id,username){
                     
                 break;
                 case 'mapa':
-                    result.message = 'https://gamewith-en.akamaized.net/img/original_e1499395800d1d1a15d0d6c810ac783d.jpg';
-                    resolve(result);
+                    data.message = 'https://gamewith-en.akamaized.net/img/original_e1499395800d1d1a15d0d6c810ac783d.jpg';
+                    resolve(data);
                 case 'default':
                     dbInterface.fetchUser(user_id).then(db_user =>{
                         
                         let db_settings = db_user.settings;
                         db_settings.tts = default_tts_settings;
                         dbInterface.updateUserSettings(user_id,db_settings).then(res =>{
-                            result.message = "Ustawiono domyślny tts dla: " + username;
-                            resolve(result);
+                            data.message = "Ustawiono domyślny tts dla: " + username;
+                            resolve(data);
                         })
                     });
 
