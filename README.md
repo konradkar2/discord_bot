@@ -9,7 +9,7 @@ I decided to add a database so so every user could pick his favourite voice by t
 About
 --
 Every parameter is configurable, for example you can above settings by typing in text channel:   
-```javascript
+```
 !set voice=id-ID-Standard-B pitch=3 gain=10 lan=ger
 ```
 Look for available voices at: https://cloud.google.com/text-to-speech/docs/voices  
