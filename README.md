@@ -9,13 +9,19 @@ I decided to add a database so so every user could pick his favourite voice by t
 About
 --
 Every parameter is configurable, for example you can above settings by typing in text channel:   
-`!set voice=id-ID-Standard-B pitch=3 gain=10 lan=ger`
+```javascript
+!set voice=id-ID-Standard-B pitch=3 gain=10 lan=ger
+```
 Look for available voices at: https://cloud.google.com/text-to-speech/docs/voices  
 
-To turn on/off reading type:    
-`!read`  
+To turn on/off reading type:  
+```javascript
+!read  
+```
 To turn on/off translation type:  
-`!translate`
+```javascript
+!translate
+```
 Features  
 --
 - Every user has his own settings kept at server - bot creates a profile for him with his coresponding discord ID
