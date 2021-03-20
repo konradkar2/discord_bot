@@ -3,7 +3,7 @@ Simple discord bot
 This project intention was to make a discord bot that will use** Google Text To Speech** so that if user writes a message to discord channel and a
 bot will join him on his voice channel and read the message.
 
-I decided to add a database so so every user could pick his favourite voice by typing a command, then I've added **google translate API**.
+I decided to add a database so so every user could pick his favourite voice by typing a command, then I've added **google translate API**.  
 ![](https://i.imgur.com/wIjPW2o.png)
 
 About
@@ -12,11 +12,11 @@ Every parameter is configurable, for example you can above settings by typing in
 `!set voice=id-ID-Standard-B pitch=3 gain=10 lan=ger`
 Look for available voices at: https://cloud.google.com/text-to-speech/docs/voices  
 
-To turn on/off reading type:  
+To turn on/off reading type:    
 `!read`  
-To turn on/off translation type:
+To turn on/off translation type:  
 `!translate`
-Features
+Features  
 --
 - Every user has his own settings kept at server - bot creates a profile for him with his coresponding discord ID
 - All audio generated messages are queued, so many users can type at once and still all the messages shall be played by bot, each one with its own settings  
